@@ -29,13 +29,12 @@ const addHistoricoEstacionamentoDB = async (body) => {
         const results = await pool.query(
             `INSERT INTO registro_estacionamento (id_veiculo, id_vaga, data_entrada, data_saida) 
             VALUES ($1, $2, $3, $4)
-            RETURNING id, id_veiculo, id_vaga, data_entrada, data_saida`,
+            RETURNING id_veiculo, id_vaga, data_entrada, data_saida`,
             [id_veiculo, id_vaga, data_entrada, data_saida]
         );
 
         const historicoEstacionamento = results.rows[0];
         return new HistoricoEstacionamento(
-            historicoEstacionamento.id,
             historicoEstacionamento.id_veiculo,
             historicoEstacionamento.id_vaga,
             historicoEstacionamento.data_entrada,

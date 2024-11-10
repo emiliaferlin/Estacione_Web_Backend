@@ -12,15 +12,15 @@ const getVagaDB = async () => {
 
 const addVagaDB = async (body) => {
     try {
-        const { id, numero_vaga, ocupada } = body;
+        const { numero_vaga, ocupada } = body;
         const results = await pool.query(
-            `INSERT INTO vaga (id, numero_vaga, ocupada) 
-            VALUES ($1, $2, $3)
-            returning id, numero_vaga, ocupada`,
-            [id, numero_vaga, ocupada]
+            `INSERT INTO vaga (numero_vaga, ocupada) 
+            VALUES ($1, $2)
+            returning numero_vaga, ocupada`,
+            [numero_vaga, ocupada]
         );
         const vaga = results.rows[0];
-        return new Vaga(vaga.id, vaga.numero_vaga, vaga.ocupada);
+        return new Vaga(vaga.numero_vaga, vaga.ocupada);
     } catch (err) {
         throw "Erro ao inserir a vaga: " + err;
     }

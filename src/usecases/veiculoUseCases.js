@@ -12,15 +12,15 @@ const getVeiculoDB = async () => {
 
 const addVeiculoDB = async (body) => {
     try {
-        const { id, placa, modelo, cor } = body;
+        const {placa, modelo, cor } = body;
         const results = await pool.query(
-            `INSERT INTO veiculo (id, placa, modelo, cor) 
-            VALUES ($1, $2, $3, $4)
-            RETURNING id, placa, modelo, cor`,
-            [id, placa, modelo, cor]
+            `INSERT INTO veiculo (placa, modelo, cor) 
+            VALUES ($1, $2, $3)
+            RETURNING placa, modelo, cor`,
+            [placa, modelo, cor]
         );
         const veiculo = results.rows[0];
-        return new Veiculo(veiculo.id, veiculo.placa, veiculo.modelo, veiculo.cor);
+        return new Veiculo(veiculo.placa, veiculo.modelo, veiculo.cor);
     } catch (err) {
         throw "Erro ao inserir o Veículo: " + err;
     }
