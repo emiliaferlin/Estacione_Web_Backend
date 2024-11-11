@@ -3,12 +3,23 @@ const HistoricoEstacionamento = require('../entities/historicoEstacionamento')
 
 const getHistoricoEstacionamentoDB = async () => {
     try {
-        const { rows } = await pool.query('SELECT * FROM registro_estacionamento ORDER BY id');
-        return rows.map((historicoEstacionamento) => new HistoricoEstacionamento(historicoEstacionamento.id, historicoEstacionamento.id_veiculo, historicoEstacionamento.id_vaga, historicoEstacionamento.data_entrada, historicoEstacionamento.data_saida));
+        const { rows } = await pool.query(`
+            SELECT registro_estacionamento.id, 
+                   veiculo.placa, 
+                   vaga.numero_vaga, 
+                   registro_estacionamento.data_entrada, 
+                   registro_estacionamento.data_saida
+            FROM registro_estacionamento
+            JOIN veiculo ON registro_estacionamento.id_veiculo = veiculo.id
+            JOIN vaga ON registro_estacionamento.id_vaga = vaga.id
+            ORDER BY registro_estacionamento.id
+        `);
+        return rows;
     } catch (err) {
         throw "Erro : " + err;
     }
 }
+
 
 const addHistoricoEstacionamentoDB = async (body) => {
     try {
