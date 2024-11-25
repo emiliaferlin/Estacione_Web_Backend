@@ -1,16 +1,17 @@
 const { Router } = require('express');
 
 const { getVeiculo, addVeiculo, updateVeiculo, deleteVeiculo, getVeiculoPorCodigo } = require('../controllers/veiculoController');
+const { verificaJWT } = require('../controllers/segurancaController')
 
 const rotasVeiculos = new Router();
 
 rotasVeiculos.route('/veiculo')
-   .get(getVeiculo)
-   .post(addVeiculo)
-   .put(updateVeiculo)
+   .get(verificaJWT, getVeiculo)
+   .post(verificaJWT, addVeiculo)
+   .put(verificaJWT, updateVeiculo)
 
 rotasVeiculos.route('/veiculo/:codigo')
-   .get(getVeiculoPorCodigo)
-   .delete(deleteVeiculo)
+   .get(verificaJWT, getVeiculoPorCodigo)
+   .delete(verificaJWT, deleteVeiculo)
 
 module.exports = { rotasVeiculos };
