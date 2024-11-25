@@ -6,7 +6,7 @@ const login = async (request, response) => {
     await autenticaUsuarioDB(request.body)
         .then(usuario => {
             const token = jwt.sign({ usuario }, process.env.SECRET, {
-                expiresIn: 1800 // 30 minutos
+                expiresIn: 10 // 30 minutos
             })
             return response.json({ auth: true, token: token })
         })
